@@ -30,7 +30,7 @@ class BillItem(Base):
     transaction_id = Column(Integer, ForeignKey("transaction.id"))
     price = Column(Float)
     quantity = Column(Integer)
-    item_code = Column(String)
+    item_code = Column(String, ForeignKey("items.code"))
     
     transaction = relationship("Transaction")
     item = relationship("Item")
