@@ -8,7 +8,7 @@ class Transaction(Base):
     __tablename__ = 'transaction'
     
     id = Column(Integer, primary_key=True)
-    busiuness_day = Column(Date)
+    business_day = Column(Date)
     timestamp = Column(DateTime)
     
 
@@ -32,5 +32,5 @@ class BillItem(Base):
     quantity = Column(Integer)
     item_code = Column(String)
     
-    transaction = relationship("Trassation")
+    transaction = relationship("Transaction")
     item = relationship("Item")
