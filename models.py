@@ -27,10 +27,11 @@ class BillItem(Base):
     __tablename__ = 'bill_item'
 
     id = Column(Integer, primary_key=True)
-    transaction_id = Column(Integer, ForeignKey("transaction.id"))
+    transaction_id = Column(Integer, ForeignKey('transaction.id'))
     price = Column(Float)
     quantity = Column(Integer)
-    item_code = Column(String, ForeignKey("items.code"))
+    item_code = Column(String, ForeignKey('item.code'))
     
-    transaction = relationship("Transaction")
-    item = relationship("Item")
+    transaction = relationship('Transaction')
+    item = relationship('Item')
+    
