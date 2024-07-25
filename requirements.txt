@@ -5,3 +5,7 @@ aioredis
 alembic
 pydantic
 faker
+ujson
+uvloop
+pytest
+pytest-asyncio

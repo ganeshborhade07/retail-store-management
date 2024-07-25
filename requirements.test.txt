@@ -1,0 +1,5 @@
+asynctest
+pytest-cov
+pytest-json
+pytest-asyncio
+pytest
