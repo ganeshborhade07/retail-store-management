@@ -2,8 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-
-DATABASE_URL = "sqlite:///retail_db.db"
+from utils.constants import DATABASE_URL, TEST_DATABASE_URL
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -32,13 +31,18 @@ class RoutingSession(Session):
             return initialize_read_engine(DATABASE_URL)
 
 class Backend(object):
-    def __init__(self):
-        self._engine = initialize_engine(DATABASE_URL)
+    def __init__(self, test_db=False):
+        if test_db:
+            self._engine = initialize_engine(TEST_DATABASE_URL)
+        else:
+            self._engine = initialize_engine(DATABASE_URL)
 
     @classmethod
-    def instance(cls):
-        if not hasattr(cls, "_instance"):
-            cls._instance = cls()
+    def instance(cls, test_db=False):
+        breakpoint()
+        if not hasattr(cls, "_instance") or cls._instance_test_db != test_db:
+            cls._instance = cls(test_db)
+            cls._instance_test_db = test_db
         return cls._instance
 
     def get_engine(self):
