@@ -39,7 +39,6 @@ class Backend(object):
 
     @classmethod
     def instance(cls, test_db=False):
-        breakpoint()
         if not hasattr(cls, "_instance") or cls._instance_test_db != test_db:
             cls._instance = cls(test_db)
             cls._instance_test_db = test_db

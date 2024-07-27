@@ -1,4 +1,6 @@
 from fastapi import FastAPI
-from database import engine
+from apis.v1.urls import router as v1_router
 
 app = FastAPI()
+
+app.include_router(v1_router, prefix='/v1.0')
