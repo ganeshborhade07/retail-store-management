@@ -9,3 +9,4 @@ ujson
 uvloop
 pytest
 pytest-asyncio
+marshmallow

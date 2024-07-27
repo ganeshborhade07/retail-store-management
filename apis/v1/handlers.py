@@ -1,6 +1,9 @@
 import logging
-from fastapi import FastAPI, HTTPException
+import json
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
+
+from database import Backend
 
 app = FastAPI()
 logger = logging.getLogger(__name__)
@@ -20,3 +23,18 @@ async def ping_ready():
     ready = True
     message = "available service" if ready else "service Not available"
     return JSONResponse(content={"success": ready, "msg": message}, status_code=status)
+
+class BaseHandler:
+    def __init__(self, request: Request):
+        self.request = request
+    
+    @property
+    def backend(self):
+        return Backend.instance()
+    
+    def load_json(self):
+        try:
+            self.request.arguments = json.loads(self.request.body)
+        except ValueError:
+            msg = "Could not decode JSON: %s" % self.request.body
+            raise HTTPException(400, msg)
