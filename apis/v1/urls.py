@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from apis.v1.items_details import ItemHandlers
+from apis.v1.sales_summary import SalesHandlers
 from apis.v1.transaction import TransactionHandlers
 from .handlers import ping, ping_ready
 
@@ -15,3 +16,9 @@ router.add_api_route("/items/{name}", ItemHandlers.get_single_item, methods=["GE
 
 # transaction
 router.add_api_route("/transaction", TransactionHandlers.create_transaction, methods=["POST"])
+
+# sales summary
+router.add_api_route("/sales-summary", SalesHandlers.fetch_sales, methods=["POST"])
+
+# average sales data
+router.add_api_route("/avg/sales/data", SalesHandlers.average_sales_data, methods=["POST"])

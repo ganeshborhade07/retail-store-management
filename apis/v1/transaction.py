@@ -4,7 +4,7 @@ from helper.transaction_helper import TransactionHelper
 from marshmallow import ValidationError
 
 from database import Backend
-from serialiser.item_serialiser import ItemSchema
+from serialiser.serialiser import ItemSchema
 
 logger = logging.getLogger(__name__)
 session = Backend().get_session()
