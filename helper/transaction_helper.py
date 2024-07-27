@@ -18,7 +18,7 @@ class TransactionHelper:
             current_day = date.today()
             current_timestamp = datetime.now()
             response = copy.deepcopy(RESPONSE["api"])
-            item_code = kwargs.get('item_code')
+            item_code = kwargs.get('code')
             try:
                 item_obj = self.session.query(Item).filter(Item.code == item_code).one()
             except Exception as e:

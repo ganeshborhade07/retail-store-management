@@ -22,7 +22,7 @@ class Item(Base):
     name = Column(String)
     price = Column(Float)
     category = Column(String)
-    starting_quantity = Column(Integer)
+    total_quantity = Column(Integer)
 
     def __repr__(self):
         return 'Item <{}>'.format(self.id)

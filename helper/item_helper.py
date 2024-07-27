@@ -19,7 +19,7 @@ class ItemHelper:
             for item in item_obj:
                 item_response = {
                         "name" : item.name,
-                        "remaining_quantity" : item.starting_quantity,
+                        "remaining_quantity" : item.total_quantity,
                         "price" : item.price,
                     }
                 res.append(item_response)
@@ -57,7 +57,7 @@ class ItemHelper:
             for item in item_obj:
                 item_response = {
                         "name" : item.name,
-                        "remaining_quantity" : item.starting_quantity,
+                        "remaining_quantity" : item.total_quantity,
                         "price" : item.price,
                     }
                 res.append(item_response)
