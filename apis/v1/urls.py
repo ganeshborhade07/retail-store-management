@@ -22,3 +22,6 @@ router.add_api_route("/sales-summary", SalesHandlers.fetch_sales, methods=["POST
 
 # average sales data
 router.add_api_route("/avg/sales/data", SalesHandlers.average_sales_data, methods=["POST"])
+
+# generate sales report
+router.add_api_route("/generate/sales-report", SalesHandlers.generate_sales_data, methods=["POST"])
