@@ -24,7 +24,7 @@ class TransactionHandlers:
             items = await transaction_helper.create_transaction(**validated_data)
         except ValidationError as err:
             logger.exception("Validation error: %s", err.messages)
-            items = {"message": "Invalid input", "errors": err.messages}
+            items = {"message": "Invalid input", "errors": err.messages, "success": False}
         except Exception as e:
             logger.exception("Exception: %s", e)
             items = {"message": "something went wrong"}

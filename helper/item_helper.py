@@ -1,5 +1,7 @@
 import logging
 import copy
+import json
+from database import Backend
 from models import Item
 from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound
@@ -10,19 +12,25 @@ logger = logging.getLogger(__name__)
 class ItemHelper:
     def __init__(self, session):
         self.session = session
-    
+        self.redis = Backend().get_redis()
+
     async def get_all_items(self, *args, **kwargs):
         try:
             res = list()
             response = copy.deepcopy(RESPONSE["api"])
-            item_obj = self.session.query(Item).all()
-            for item in item_obj:
-                item_response = {
-                        "name" : item.name,
-                        "remaining_quantity" : item.total_quantity,
-                        "price" : item.price,
-                    }
-                res.append(item_response)
+            cached_items = self.redis.get("get_all_items")
+            if cached_items:
+                res = json.loads(cached_items)
+            else:
+                item_obj = self.session.query(Item).all()
+                for item in item_obj:
+                    item_response = {
+                            "name" : item.name,
+                            "remaining_quantity" : item.total_quantity,
+                            "price" : item.price,
+                        }
+                    res.append(item_response)
+                self.redis.set("get_all_items", json.dumps(res))
             logger.info('All items object query')
             
             response["message"] = "successfully fetch items"
@@ -45,22 +53,28 @@ class ItemHelper:
             if not name:
                 return {"message": "name not found in header"}
             name = name.lower()
-            item_obj = self.session.query(Item).filter(
-                    (func.lower(Item.name) == name.lower()) | 
-                    (func.lower(Item.code) == name.lower()) | 
-                    (func.lower(Item.category) == name.lower())
-                ).all()
             
-            if not item_obj:
-                return {"message": "item not found"}
+            cached_item = self.redis.get(name)
+            if cached_item:
+                res = json.loads(cached_item)
+            else:
+                item_obj = self.session.query(Item).filter(
+                        (func.lower(Item.name) == name.lower()) | 
+                        (func.lower(Item.code) == name.lower()) | 
+                        (func.lower(Item.category) == name.lower())
+                    ).all()
             
-            for item in item_obj:
-                item_response = {
-                        "name" : item.name,
-                        "remaining_quantity" : item.total_quantity,
-                        "price" : item.price,
-                    }
-                res.append(item_response)
+                if not item_obj:
+                    return {"message": "item not found", "success" : False}
+
+                for item in item_obj:
+                    item_response = {
+                            "name" : item.name,
+                            "remaining_quantity" : item.total_quantity,
+                            "price" : item.price,
+                        }
+                    res.append(item_response)
+                self.redis.set(name, json.dumps(res))
 
             logger.info('item object query')
             

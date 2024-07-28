@@ -10,3 +10,5 @@ uvloop
 pytest
 pytest-asyncio
 marshmallow
+aioredis
+redis

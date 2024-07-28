@@ -2,10 +2,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from utils.constants import DATABASE_URL, TEST_DATABASE_URL
+from utils.constants import DATABASE_URL, TEST_DATABASE_URL, REDIS_URL
+import redis
 
 engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+redis = redis.Redis.from_url(REDIS_URL)
 
 write_engine = None
 read_engine = None
@@ -64,3 +66,7 @@ class Backend(object):
         self.get_new_session_factory()
         self._session = self._session_factory()
         return self._session
+
+    def get_redis(self):
+        self._redis = redis
+        return self._redis
