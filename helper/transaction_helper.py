@@ -1,6 +1,7 @@
 import logging
 import copy
 from datetime import date, datetime
+from common.decorator import measure_latency
 from models import Item, Transaction
 from sqlalchemy import func
 from sqlalchemy.orm.exc import NoResultFound
@@ -12,6 +13,7 @@ class TransactionHelper:
     def __init__(self, session):
         self.session = session
     
+    @measure_latency
     async def create_transaction(self, *args, **kwargs):
         try:
             item_obj = None

@@ -1,6 +1,7 @@
 import logging
 import copy
 import json
+from common.decorator import measure_latency
 from database import Backend
 from models import Item
 from sqlalchemy import func
@@ -14,6 +15,7 @@ class ItemHelper:
         self.session = session
         self.redis = Backend().get_redis()
 
+    @measure_latency
     async def get_all_items(self, *args, **kwargs):
         try:
             res = list()
@@ -46,6 +48,7 @@ class ItemHelper:
 
         return response
     
+    @measure_latency
     async def get_item(self, name, *args, **kwargs):
         try:
             res = []

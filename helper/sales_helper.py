@@ -4,6 +4,7 @@ import io
 import csv
 import json
 from datetime import date, datetime
+from common.decorator import measure_latency
 from database import Backend
 from models import BillItem, Item, Transaction
 from sqlalchemy import func
@@ -18,6 +19,7 @@ class SalesSummaryHelper:
         self.session = session
         self.redis = Backend().get_redis()
     
+    @measure_latency
     async def get_sales_data(self, *args, **kwargs):
         try:
             response = copy.deepcopy(RESPONSE["api"])
@@ -81,6 +83,7 @@ class SalesSummaryHelper:
         return response
     
     
+    @measure_latency
     async def average_sales_data(self, *args, **kwargs):
         try:
             response = copy.deepcopy(RESPONSE["api"])
@@ -135,6 +138,7 @@ class SalesSummaryHelper:
         return response
 
     
+    @measure_latency
     async def generate_sales_report(self, *args, **kwargs):
         try:
             response = copy.deepcopy(RESPONSE["api"])
